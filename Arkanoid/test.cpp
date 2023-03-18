@@ -1,13 +1,20 @@
 #include <iostream>
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_image.h>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
 typedef struct {
-	SDL_Renderer  *renderer;
-	SDL_Window *window;
+	SDL_Renderer* renderer;
+	SDL_Window* window;
 } App;
+typedef struct
+{
+	int32_t x;
+	int32_t y;
+	SDL_Texture* texture;
+} Entity;
 
 App app;
 
@@ -57,13 +64,31 @@ void doInput(void)
 		}
 	}
 }
+void prepareScene(void)
+{
+	SDL_SetRenderDrawColor(app.renderer, 96, 128, 255, 255);
+	SDL_RenderClear(app.renderer);
+}
+void presentScene(void)
+{
+	SDL_RenderPresent(app.renderer);
+}
+SDL_Texture* loadTexture(char* filename)
+{
+	SDL_Texture* texture;
+	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
+	
+}
 
 int main()
 {
+	memset(&app, 0, sizeof(App));
 	initSDL();
 	while (1)
 	{
+		prepareScene();
 		doInput();
+		presentScene();
 	}
 	return 0;
 }
