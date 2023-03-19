@@ -17,6 +17,7 @@ typedef struct
 } Entity;
 
 App app;
+Entity player;
 
 void initSDL(void)
 {
@@ -47,6 +48,7 @@ void initSDL(void)
 		printf("Failed to create renderer: %s\n", SDL_GetError());
 		exit(1);
 	}
+	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 }
 void doInput(void)
 {
@@ -73,22 +75,42 @@ void presentScene(void)
 {
 	SDL_RenderPresent(app.renderer);
 }
-SDL_Texture* loadTexture(char* filename)
+SDL_Texture* loadTexture(const char* filename)
 {
 	SDL_Texture* texture;
 	SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Loading %s", filename);
-	
+	texture = IMG_LoadTexture(app.renderer, filename);
+	return texture;
+}
+void blit(SDL_Texture* texture, int x, int y)
+{
+	SDL_FRect dest;
+	dest.x = x;
+	dest.y = y;
+	int w, h;
+	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+	dest.h = h;
+	dest.w = w;
+	SDL_RenderTexture(app.renderer, texture, NULL, &dest);
 }
 
 int main()
 {
 	memset(&app, 0, sizeof(App));
+	memset(&player, 0, sizeof(Entity));
 	initSDL();
+
+	player.x = 100;
+	player.y = 100;
+	player.texture = loadTexture("../assets/56-Breakout-Tiles.png");
+
 	while (1)
 	{
 		prepareScene();
 		doInput();
+		blit(player.texture, player.x, player.y);
 		presentScene();
+		SDL_Delay(16);
 	}
 	return 0;
 }
