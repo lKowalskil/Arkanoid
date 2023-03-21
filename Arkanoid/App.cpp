@@ -1,6 +1,6 @@
 #include <App.h>
 
-App::App(int width, int height)
+App::App(int32_t width, int32_t height)
 {
 	uint32_t rendererFlags, windowFlags;
 	rendererFlags = SDL_RENDERER_ACCELERATED;

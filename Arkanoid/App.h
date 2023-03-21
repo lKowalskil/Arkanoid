@@ -5,8 +5,9 @@
 
 class App
 {
+public:
+	App(int32_t width, int32_t height);
+	~App();
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	App(int width, int height);
-	~App();
 };
