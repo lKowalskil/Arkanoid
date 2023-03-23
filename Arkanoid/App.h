@@ -10,4 +10,5 @@ public:
 	~App();
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+	bool up, down, left, right;
 };
