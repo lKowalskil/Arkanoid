@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stdio.h>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_image.h>
 #include <Entity.h>
@@ -56,7 +56,7 @@ void doKeyUp(SDL_KeyboardEvent* event, App* app)
 void doInput(App* app)
 {
 	SDL_Event event;
-
+	SDL_GetMouseState(&app->mousePos.x, &app->mousePos.y);
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
@@ -92,20 +92,12 @@ int main()
 {
 	App app(SCREEN_WIDTH, SCREEN_HEIGHT);
 	Entity player("../assets/56-Breakout-Tiles.png", app.renderer);
-	player.setPos(100, 100);
+	player.setPos(640, 600);
 
 	while (1)
 	{
 		prepareScene(app.renderer);
 		doInput(&app);
-		if (app.up)
-		{
-			player.setPos(player.getPos().x, player.getPos().y - 4);
-		}
-		if (app.down)
-		{
-			player.setPos(player.getPos().x, player.getPos().y + 4);
-		}
 		if (app.left)
 		{
 			player.setPos(player.getPos().x - 4, player.getPos().y);
@@ -116,6 +108,7 @@ int main()
 		}
 		player.draw(app.renderer);
 		presentScene(app.renderer);
+		printf("%f:%f\n%i:%i\n", app.mousePos.x, app.mousePos.y, player.getPos().x, player.getPos().y);
 		SDL_Delay(4);
 	}
 	return 0;

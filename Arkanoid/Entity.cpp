@@ -14,8 +14,8 @@ Entity::~Entity()
 
 void Entity::setPos(int32_t x, int32_t y)
 {
-	pos.x = x;
-	pos.y = y;
+	pos.x = x - w/2;
+	pos.y = y - h/2;
 }
 
 vec2Int Entity::getPos()
