@@ -98,17 +98,20 @@ int main()
 	{
 		prepareScene(app.renderer);
 		doInput(&app);
-		if (app.left)
+		if (player.getPos().x > 0 + player.getSize().x && player.getPos().x < SCREEN_WIDTH - player.getSize().x)
 		{
-			player.setPos(player.getPos().x - 4, player.getPos().y);
-		}
-		if (app.right)
-		{
-			player.setPos(player.getPos().x + 4, player.getPos().y);
+			if (app.left)
+			{
+				player.setPos(player.getPos().x - 4, player.getPos().y);
+			}
+			if (app.right)
+			{
+				player.setPos(player.getPos().x + 4, player.getPos().y);
+			}
 		}
 		player.draw(app.renderer);
 		presentScene(app.renderer);
-		printf("%f:%f\n%i:%i\n", app.mousePos.x, app.mousePos.y, player.getPos().x, player.getPos().y);
+		printf("%f:%f\n%i:%i\n%i:%i\n", app.mousePos.x, app.mousePos.y, player.getPos().x, player.getPos().y, player.getSize().x, player.getSize().y);
 		SDL_Delay(4);
 	}
 	return 0;

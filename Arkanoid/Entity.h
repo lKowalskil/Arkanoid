@@ -14,5 +14,6 @@ public:
 	~Entity();
 	void setPos(int32_t x, int32_t y);
 	vec2Int getPos();
+	vec2Int getSize();
 	void draw(SDL_Renderer* renderer);
 };
