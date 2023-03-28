@@ -92,23 +92,34 @@ int main()
 {
 	App app(SCREEN_WIDTH, SCREEN_HEIGHT);
 	Entity player("../assets/56-Breakout-Tiles.png", app.renderer);
-	player.setPos(640, 600);
+	Entity ball("../assets/62-Breakout-Tiles.png", app.renderer);
+	player.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5);
+	ball.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5);
 
 	while (1)
 	{
 		prepareScene(app.renderer);
 		doInput(&app);
-		if (player.getPos().x > 0 + player.getSize().x && player.getPos().x < SCREEN_WIDTH - player.getSize().x)
+		bool iscool;
+		if (player.getPos().x > 0 + player.getSize().x/2)
 		{
 			if (app.left)
 			{
 				player.setPos(player.getPos().x - 4, player.getPos().y);
 			}
+		} 
+		if (player.getPos().x < SCREEN_WIDTH - player.getSize().x / 2)
+		{
 			if (app.right)
 			{
 				player.setPos(player.getPos().x + 4, player.getPos().y);
 			}
 		}
+		if (ball.aabb.isCollided(&player.aabb))
+		{
+			printf("bomba");
+		}
+		ball.draw(app.renderer);
 		player.draw(app.renderer);
 		presentScene(app.renderer);
 		printf("%f:%f\n%i:%i\n%i:%i\n", app.mousePos.x, app.mousePos.y, player.getPos().x, player.getPos().y, player.getSize().x, player.getSize().y);

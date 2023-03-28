@@ -6,6 +6,10 @@ Entity::Entity(const char* texture_filename, SDL_Renderer* renderer)
 	pos.y = 0;
 	texture = loadTexture(texture_filename, renderer);
 	SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
+	aabb.x = pos.x;
+	aabb.y = pos.y;
+	aabb.h = h;
+	aabb.w = w;
 }
 
 Entity::~Entity()
@@ -14,6 +18,8 @@ Entity::~Entity()
 
 void Entity::setPos(int32_t x, int32_t y)
 {
+	aabb.x = x;
+	aabb.y = y;
 	pos.x = x;
 	pos.y = y;
 }
