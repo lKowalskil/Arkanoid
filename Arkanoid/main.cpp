@@ -88,33 +88,83 @@ void presentScene(SDL_Renderer* renderer)
 	SDL_RenderPresent(renderer);
 }
 
+int checkIfOutOfTheScreen(Entity* entity, int screenW, int screenH)
+{
+	// 0 - not out, 1 - left, 2 - right, 3 - up, 4 - down
+	if (entity->getPos().x < 0 + entity->getSize().x / 2)
+	{
+		return 1;
+	}
+	if (entity->getPos().x > screenW - entity->getSize().x / 2)
+	{
+		return 2;
+	}
+	if (entity->getPos().y < 0 + entity->getSize().y / 2)
+	{
+		return 3;
+	}
+	if (entity->getPos().y > screenH - entity->getSize().y / 2)
+	{
+		return 4;
+	}
+	return 0;
+}
+
 int main()
 {
 	App app(SCREEN_WIDTH, SCREEN_HEIGHT);
 	Entity player("../assets/56-Breakout-Tiles.png", app.renderer);
-	Entity ball("../assets/62-Breakout-Tiles.png", app.renderer);
+	Entity ball("../assets/64-Breakout-Tiles.png", app.renderer);
 	player.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5);
-	ball.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5);
+	ball.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
+	ball.dx = 0.2;
+	ball.dy = -0.2;
+
 
 	while (1)
 	{
 		prepareScene(app.renderer);
 		doInput(&app);
-		bool iscool;
-		if (player.getPos().x > 0 + player.getSize().x/2)
+		printf("\n%i\n", checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT));
+		if (checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
 		{
 			if (app.left)
 			{
 				player.setPos(player.getPos().x - 4, player.getPos().y);
 			}
 		} 
-		if (player.getPos().x < SCREEN_WIDTH - player.getSize().x / 2)
+		else if (checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT) == 1)
 		{
 			if (app.right)
 			{
 				player.setPos(player.getPos().x + 4, player.getPos().y);
 			}
 		}
+		else
+		{
+			if (app.left)
+			{
+				player.setPos(player.getPos().x - 4, player.getPos().y);
+			}
+			if (app.right)
+			{
+				player.setPos(player.getPos().x + 4, player.getPos().y);
+			}
+		}
+
+		ball.setPos(ball.getPos().x + ball.dx, ball.getPos().y + ball.dy);
+		printf("%f : %f, %f : %f", ball.getPos().x, ball.getPos().y, ball.dx, ball.dy);
+		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 1 || 
+			checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
+		{
+			ball.dx = -ball.dx;
+		}
+		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 3)
+		{
+			ball.dy = -ball.dy;
+		}
+
+
 		if (ball.aabb.isCollided(&player.aabb))
 		{
 			printf("bomba");
@@ -122,7 +172,7 @@ int main()
 		ball.draw(app.renderer);
 		player.draw(app.renderer);
 		presentScene(app.renderer);
-		printf("%f:%f\n%i:%i\n%i:%i\n", app.mousePos.x, app.mousePos.y, player.getPos().x, player.getPos().y, player.getSize().x, player.getSize().y);
+		//printf("%f:%f\n%i:%i\n%i:%i\n", app.mousePos.x, app.mousePos.y, player.getPos().x, player.getPos().y, player.getSize().x, player.getSize().y);
 		SDL_Delay(4);
 	}
 	return 0;

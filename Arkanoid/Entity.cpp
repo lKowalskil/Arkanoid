@@ -24,7 +24,7 @@ void Entity::setPos(int32_t x, int32_t y)
 	pos.y = y;
 }
 
-vec2Int Entity::getPos()
+vec2Float Entity::getPos()
 {
 	return pos;
 }
