@@ -15,7 +15,7 @@ public:
 	AABB aabb;
 	Entity(const char* texture_filename, SDL_Renderer* renderer);
 	~Entity();
-	void setPos(int32_t x, int32_t y);
+	void setPos(float x, float y);
 	vec2Float getPos();
 	vec2Int getSize();
 	void draw(SDL_Renderer* renderer);

@@ -117,8 +117,8 @@ int main()
 	Entity ball("../assets/64-Breakout-Tiles.png", app.renderer);
 	player.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5);
 	ball.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
-	ball.dx = 0.2;
-	ball.dy = -0.2;
+	ball.dx = 0.1;
+	ball.dy = -0.5;
 
 
 	while (1)
@@ -152,18 +152,20 @@ int main()
 			}
 		}
 
-		ball.setPos(ball.getPos().x + ball.dx, ball.getPos().y + ball.dy);
-		printf("%f : %f, %f : %f", ball.getPos().x, ball.getPos().y, ball.dx, ball.dy);
+		printf("%f : %f, %f : %f, %i", ball.getPos().x, ball.getPos().y, ball.dx, ball.dy, checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT));
 		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 1 || 
 			checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
 		{
+			ball.setPos(ball.getPos().x - 5 * ball.dx, ball.getPos().y + ball.dy);
 			ball.dx = -ball.dx;
 		}
 		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 3)
 		{
+			ball.setPos(ball.getPos().x + ball.dx, ball.getPos().y - 5 * ball.dy);
 			ball.dy = -ball.dy;
 		}
 
+		ball.setPos(ball.getPos().x + ball.dx, ball.getPos().y + ball.dy);
 
 		if (ball.aabb.isCollided(&player.aabb))
 		{

@@ -16,7 +16,7 @@ Entity::~Entity()
 {
 }
 
-void Entity::setPos(int32_t x, int32_t y)
+void Entity::setPos(float x, float y)
 {
 	aabb.x = x;
 	aabb.y = y;
