@@ -8,6 +8,7 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+#define deltaTime 0.016f //Just for imitate delta time
 
 void doKeyDown(SDL_KeyboardEvent* event, App* app)
 {
@@ -117,42 +118,42 @@ int main()
 	Entity ball("../assets/64-Breakout-Tiles.png", app.renderer);
 	player.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5);
 	ball.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
-	ball.dx = 0.1;
-	ball.dy = -0.5;
+	ball.dx = 15;
+	ball.dy = -25;
 
 
 	while (1)
 	{
 		prepareScene(app.renderer);
 		doInput(&app);
-		printf("\n%i\n", checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT));
+		//printf("\n%i\n", checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT));
 		if (checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
 		{
 			if (app.left)
 			{
-				player.setPos(player.getPos().x - 4, player.getPos().y);
+				player.setPos(player.getPos().x - 50 * deltaTime, player.getPos().y);
 			}
 		} 
 		else if (checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT) == 1)
 		{
 			if (app.right)
 			{
-				player.setPos(player.getPos().x + 4, player.getPos().y);
+				player.setPos(player.getPos().x + 50 * deltaTime, player.getPos().y);
 			}
 		}
 		else
 		{
 			if (app.left)
 			{
-				player.setPos(player.getPos().x - 4, player.getPos().y);
+				player.setPos(player.getPos().x - 50 * deltaTime, player.getPos().y);
 			}
 			if (app.right)
 			{
-				player.setPos(player.getPos().x + 4, player.getPos().y);
+				player.setPos(player.getPos().x + 50 * deltaTime, player.getPos().y);
 			}
 		}
 
-		printf("%f : %f, %f : %f, %i", ball.getPos().x, ball.getPos().y, ball.dx, ball.dy, checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT));
+		//printf("%f : %f, %f : %f, %i", ball.getPos().x, ball.getPos().y, ball.dx, ball.dy, checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT));
 		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 1 || 
 			checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
 		{
@@ -164,18 +165,25 @@ int main()
 			ball.setPos(ball.getPos().x + ball.dx, ball.getPos().y - 5 * ball.dy);
 			ball.dy = -ball.dy;
 		}
-
-		ball.setPos(ball.getPos().x + ball.dx, ball.getPos().y + ball.dy);
+		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 4)
+		{
+			printf("gameover");
+			break;
+		}
 
 		if (ball.aabb.isCollided(&player.aabb))
 		{
-			printf("bomba");
+			ball.dy = -ball.dy;
+
 		}
+
+		ball.setPos(ball.getPos().x + ball.dx * deltaTime, ball.getPos().y + ball.dy * deltaTime);
+
 		ball.draw(app.renderer);
 		player.draw(app.renderer);
 		presentScene(app.renderer);
 		//printf("%f:%f\n%i:%i\n%i:%i\n", app.mousePos.x, app.mousePos.y, player.getPos().x, player.getPos().y, player.getSize().x, player.getSize().y);
-		SDL_Delay(4);
+		SDL_Delay(deltaTime*1000);
 	}
 	return 0;
 }
