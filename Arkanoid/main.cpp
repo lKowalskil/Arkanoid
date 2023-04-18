@@ -118,8 +118,6 @@ int main()
 	Entity ball("../assets/64-Breakout-Tiles.png", app.renderer);
 	player.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5);
 	ball.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
-	ball.dx = 15;
-	ball.dy = -25;
 
 
 	while (1)
@@ -157,12 +155,12 @@ int main()
 		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 1 || 
 			checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
 		{
-			ball.setPos(ball.getPos().x - 5 * ball.dx, ball.getPos().y + ball.dy);
+			ball.setPos(ball.getPos().x - 5 * ball.dx * deltaTime, ball.getPos().y + ball.dy * deltaTime);
 			ball.dx = -ball.dx;
 		}
 		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 3)
 		{
-			ball.setPos(ball.getPos().x + ball.dx, ball.getPos().y - 5 * ball.dy);
+			ball.setPos(ball.getPos().x + ball.dx * deltaTime, ball.getPos().y - 5 * ball.dy * deltaTime);
 			ball.dy = -ball.dy;
 		}
 		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 4)

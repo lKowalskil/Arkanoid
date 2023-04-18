@@ -104,12 +104,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Projects\Arkanoid\SDL2\include;D:\Projects\Arkanoid\SDL_image\include;D:\Projects\Arkanoid\Arkanoid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SDL2\include; ..\SDL_image\include;..\Arkanoid;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Projects\Arkanoid\SDL2\build\Release;D:\Projects\Arkanoid\SDL_image\VisualC\x64\Release;D:\Projects\Arkanoid\SDL_image\VisualC\x64\Release\SDL3_image.tlog;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\SDL2\build\Release;..\SDL_image\VisualC\x64\Release;..\SDL_image\VisualC\x64\Release\SDL3_image.tlog;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL3.lib;SDL3_image.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -131,16 +131,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Entity.h" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
     <ClInclude Include="App.h" />
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="Functions.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Structs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

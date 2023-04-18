@@ -12,8 +12,10 @@ Entity::Entity(const char* texture_filename, SDL_Renderer* renderer)
 	aabb.w = w;
 }
 
+
 Entity::~Entity()
 {
+
 }
 
 void Entity::setPos(float x, float y)

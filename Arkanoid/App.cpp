@@ -1,7 +1,10 @@
 #include <App.h>
 
 App::App(int32_t width, int32_t height)
+	:down(0), up(0), right(0), left(0)
 {
+	mousePos.x = 0;
+	mousePos.y = 0;
 	uint32_t rendererFlags, windowFlags;
 	rendererFlags = SDL_RENDERER_ACCELERATED;
 	windowFlags = NULL;
