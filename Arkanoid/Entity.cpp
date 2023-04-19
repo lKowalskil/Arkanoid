@@ -4,6 +4,8 @@ Entity::Entity(const char* texture_filename, SDL_Renderer* renderer)
 {
 	pos.x = 0;
 	pos.y = 0;
+	dx = 0;
+	dy = 0;
 	texture = loadTexture(texture_filename, renderer);
 	SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
 	aabb.x = pos.x;
@@ -47,4 +49,26 @@ void Entity::draw(SDL_Renderer* renderer)
 	dest.h = h;
 	dest.w = w;
 	SDL_RenderTexture(renderer, texture, NULL, &dest);
+}
+
+int Entity::checkIfOutOfTheScreen(int screenW, int screenH)
+{
+	// 0 - not out, 1 - left, 2 - right, 3 - up, 4 - down
+	if (getPos().x < 0 + getSize().x / 2)
+	{
+		return 1;
+	}
+	if (getPos().x > screenW - getSize().x / 2)
+	{
+		return 2;
+	}
+	if (getPos().y < 0 + getSize().y / 2)
+	{
+		return 3;
+	}
+	if (getPos().y > screenH - getSize().y / 2)
+	{
+		return 4;
+	}
+	return 0;
 }

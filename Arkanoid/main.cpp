@@ -4,6 +4,8 @@
 #include <Entity.h>
 #include <App.h>
 #include <Structs.h>
+#include <Player.h>
+#include <Ball.h>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -89,35 +91,12 @@ void presentScene(SDL_Renderer* renderer)
 	SDL_RenderPresent(renderer);
 }
 
-int checkIfOutOfTheScreen(Entity* entity, int screenW, int screenH)
-{
-	// 0 - not out, 1 - left, 2 - right, 3 - up, 4 - down
-	if (entity->getPos().x < 0 + entity->getSize().x / 2)
-	{
-		return 1;
-	}
-	if (entity->getPos().x > screenW - entity->getSize().x / 2)
-	{
-		return 2;
-	}
-	if (entity->getPos().y < 0 + entity->getSize().y / 2)
-	{
-		return 3;
-	}
-	if (entity->getPos().y > screenH - entity->getSize().y / 2)
-	{
-		return 4;
-	}
-	return 0;
-}
 
 int main()
 {
 	App app(SCREEN_WIDTH, SCREEN_HEIGHT);
-	Entity player("../assets/56-Breakout-Tiles.png", app.renderer);
-	Entity ball("../assets/64-Breakout-Tiles.png", app.renderer);
-	player.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5);
-	ball.setPos(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4);
+	Player player(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5, "../assets/56-Breakout-Tiles.png", app.renderer);
+	Ball ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4, "../assets/64-Breakout-Tiles.png", app.renderer);
 
 
 	while (1)
@@ -125,14 +104,14 @@ int main()
 		prepareScene(app.renderer);
 		doInput(&app);
 		//printf("\n%i\n", checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT));
-		if (checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
+		if (player.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
 		{
 			if (app.left)
 			{
 				player.setPos(player.getPos().x - 50 * deltaTime, player.getPos().y);
 			}
 		} 
-		else if (checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT) == 1)
+		else if (player.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 1)
 		{
 			if (app.right)
 			{
@@ -152,18 +131,18 @@ int main()
 		}
 
 		//printf("%f : %f, %f : %f, %i", ball.getPos().x, ball.getPos().y, ball.dx, ball.dy, checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT));
-		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 1 || 
-			checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
+		if (ball.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 1 || 
+			ball.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
 		{
 			ball.setPos(ball.getPos().x - 5 * ball.dx * deltaTime, ball.getPos().y + ball.dy * deltaTime);
 			ball.dx = -ball.dx;
 		}
-		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 3)
+		if (ball.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 3)
 		{
 			ball.setPos(ball.getPos().x + ball.dx * deltaTime, ball.getPos().y - 5 * ball.dy * deltaTime);
 			ball.dy = -ball.dy;
 		}
-		if (checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT) == 4)
+		if (ball.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 4)
 		{
 			printf("gameover");
 			break;
