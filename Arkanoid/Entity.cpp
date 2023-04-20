@@ -28,14 +28,14 @@ void Entity::setPos(float x, float y)
 	pos.y = y;
 }
 
-vec2Float Entity::getPos()
+vec2<float> Entity::getPos()
 {
 	return pos;
 }
 
-vec2Int Entity::getSize()
+vec2<int> Entity::getSize()
 {
-	vec2Int size;
+	vec2<int> size;
 	size.x = w;
 	size.y = h;
 	return size;

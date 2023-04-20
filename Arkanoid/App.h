@@ -2,7 +2,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_image.h>
 #include <stdio.h>
-#include <Structs.h>
+#include <Math.h>
 
 class App
 {
@@ -12,5 +12,5 @@ public:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	bool up, down, left, right;
-	vec2Float mousePos;
+	vec2<float> mousePos;
 };

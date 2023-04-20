@@ -3,7 +3,7 @@
 #include <SDL3/SDL_image.h>
 #include <Entity.h>
 #include <App.h>
-#include <Structs.h>
+#include <Math.h>
 #include <Player.h>
 #include <Ball.h>
 
