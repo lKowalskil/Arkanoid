@@ -3,6 +3,8 @@
 #include <SDL3/SDL_image.h>
 #include <stdio.h>
 #include <Math.h>
+#include <Player.h>
+#include <Ball.h>
 
 class App
 {
@@ -11,6 +13,8 @@ public:
 	~App();
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+	Player* player;
+	Ball* ball;
 	bool up, down, left, right;
-	vec2<float> mousePos;
+	vec2f mousePos;
 };

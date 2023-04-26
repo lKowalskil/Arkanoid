@@ -1,14 +1,18 @@
 #pragma once
-#include <math.h>
+#include <corecrt_math.h>
 
-template<typename T>
-class vec2 {
-
+class vec2f {
 private:
 
 
 public:
-	T x;
-	T y;
+	float x;
+	float y;
+	vec2f& operator=(const vec2f& other);
+	vec2f operator*(float scalar) const;
+	vec2f operator*(int scalar) const;
+	vec2f(float _x, float _y);
+	vec2f();
 	float magnitude();
+	vec2f normalized();
 };

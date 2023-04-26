@@ -2,11 +2,13 @@
 
 Entity::Entity(const char* texture_filename, SDL_Renderer* renderer)
 {
+	SDL_assert(texture_filename != nullptr || renderer != nullptr);
 	pos.x = 0;
 	pos.y = 0;
 	dx = 0;
 	dy = 0;
 	texture = loadTexture(texture_filename, renderer);
+	SDL_assert(texture != nullptr);
 	SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
 	aabb.x = pos.x;
 	aabb.y = pos.y;
@@ -28,14 +30,14 @@ void Entity::setPos(float x, float y)
 	pos.y = y;
 }
 
-vec2<float> Entity::getPos()
+vec2f Entity::getPos()
 {
 	return pos;
 }
 
-vec2<int> Entity::getSize()
+vec2f Entity::getSize()
 {
-	vec2<int> size;
+	vec2f size;
 	size.x = w;
 	size.y = h;
 	return size;

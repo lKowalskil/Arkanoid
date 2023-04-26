@@ -75,6 +75,13 @@ void doInput(App* app)
 			case SDL_EVENT_KEY_UP:
 				doKeyUp(&event.key, app);
 				break;
+				
+			case SDL_EVENT_MOUSE_BUTTON_DOWN:
+				if (event.button.button == SDL_BUTTON_LEFT)
+				{
+					app->ball->startMoving(app->mousePos);
+				}
+				break;
 
 			default:
 				break;
@@ -91,46 +98,46 @@ void presentScene(SDL_Renderer* renderer)
 	SDL_RenderPresent(renderer);
 }
 
-
 int main()
 {
 	App app(SCREEN_WIDTH, SCREEN_HEIGHT);
 	Player player(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5, "../assets/56-Breakout-Tiles.png", app.renderer);
+	app.player = &player;
 	Ball ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4, "../assets/64-Breakout-Tiles.png", app.renderer);
-
+	app.ball = &ball;
+	player.setSpeed(150);
+	ball.setSpeed(60);
 
 	while (1)
 	{
 		prepareScene(app.renderer);
 		doInput(&app);
-		//printf("\n%i\n", checkIfOutOfTheScreen(&player, SCREEN_WIDTH, SCREEN_HEIGHT));
 		if (player.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
 		{
 			if (app.left)
 			{
-				player.setPos(player.getPos().x - 50 * deltaTime, player.getPos().y);
+				player.moveLeft(deltaTime);
 			}
 		} 
 		else if (player.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 1)
 		{
 			if (app.right)
 			{
-				player.setPos(player.getPos().x + 50 * deltaTime, player.getPos().y);
+				player.moveRight(deltaTime);
 			}
 		}
 		else
 		{
 			if (app.left)
 			{
-				player.setPos(player.getPos().x - 50 * deltaTime, player.getPos().y);
+				player.moveLeft(deltaTime);
 			}
 			if (app.right)
 			{
-				player.setPos(player.getPos().x + 50 * deltaTime, player.getPos().y);
+				player.moveRight(deltaTime);
 			}
 		}
 
-		//printf("%f : %f, %f : %f, %i", ball.getPos().x, ball.getPos().y, ball.dx, ball.dy, checkIfOutOfTheScreen(&ball, SCREEN_WIDTH, SCREEN_HEIGHT));
 		if (ball.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 1 || 
 			ball.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
 		{
@@ -154,12 +161,11 @@ int main()
 
 		}
 
-		ball.setPos(ball.getPos().x + ball.dx * deltaTime, ball.getPos().y + ball.dy * deltaTime);
+		ball.move(deltaTime);
 
 		ball.draw(app.renderer);
 		player.draw(app.renderer);
 		presentScene(app.renderer);
-		//printf("%f:%f\n%i:%i\n%i:%i\n", app.mousePos.x, app.mousePos.y, player.getPos().x, player.getPos().y, player.getSize().x, player.getSize().y);
 		SDL_Delay(deltaTime*1000);
 	}
 	return 0;
