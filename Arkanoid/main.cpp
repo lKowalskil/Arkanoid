@@ -6,6 +6,8 @@
 #include <Math.h>
 #include <Player.h>
 #include <Ball.h>
+#include <ResourceManager.h>
+#include <Brick.h>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
@@ -101,12 +103,35 @@ void presentScene(SDL_Renderer* renderer)
 int main()
 {
 	App app(SCREEN_WIDTH, SCREEN_HEIGHT);
-	Player player(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5, "../assets/56-Breakout-Tiles.png", app.renderer);
+	ResourceManager& resourceManager = ResourceManager::getInstance();
+	resourceManager.init(app.renderer);
+	
+	vec2f brickSize = resourceManager.getTextureSize("GrayBrick");
+	int numberOfBricksX = SCREEN_WIDTH / brickSize.x - 1;
+	int freeSpaceX = SCREEN_WIDTH - brickSize.x * numberOfBricksX;
+
+	std::vector<Brick> bricks;
+	int currentX = freeSpaceX / 2 + brickSize.x / 2;
+	int currentY = brickSize.y;
+	for (int j = 0; j < 15; ++j)
+	{
+		currentX = freeSpaceX / 2 + brickSize.x / 2;
+		for (int i = 0; i < numberOfBricksX; ++i)
+		{
+			Brick brick(currentX, currentY, app.renderer);
+			bricks.push_back(brick);
+
+			currentX += brickSize.x;
+		}
+		currentY += brickSize.y;
+	}
+
+	Player player(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 5, app.renderer);
 	app.player = &player;
-	Ball ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4, "../assets/64-Breakout-Tiles.png", app.renderer);
+	Ball ball(SCREEN_WIDTH / 2, SCREEN_HEIGHT - SCREEN_HEIGHT / 4, app.renderer);
 	app.ball = &ball;
 	player.setSpeed(150);
-	ball.setSpeed(60);
+	ball.setSpeed(100);
 
 	while (1)
 	{
@@ -158,10 +183,28 @@ int main()
 		if (ball.aabb.isCollided(&player.aabb))
 		{
 			ball.dy = -ball.dy;
+		}
 
+		for (Brick& brick : bricks)
+		{
+			if (ball.aabb.isCollided(&brick.aabb) && !brick.isDestroyed())
+			{
+				ball.dy = -ball.dy;
+				brick.Damaged();
+			}
 		}
 
 		ball.move(deltaTime);
+
+		for (Brick& brick : bricks)
+		{
+			if (!brick.isDestroyed())
+			{
+				brick.draw(app.renderer);
+			}
+		}
+
+		player.animate(deltaTime);
 
 		ball.draw(app.renderer);
 		player.draw(app.renderer);

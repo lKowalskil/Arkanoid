@@ -4,16 +4,21 @@
 #include <Functions.h>
 #include <Math.h>
 #include <AABB.h>
+#include <ResourceManager.h>
 
 class Entity {
 	vec2f pos;
 	int w, h;
 	SDL_Texture* texture;
+	ResourceManager& resourceManager;
+	SDL_Renderer* renderer;
 
 public:
 	float dx, dy;
 	AABB aabb;
-	Entity(const char* texture_filename, SDL_Renderer* renderer);
+	Entity(const std::string& textureName, SDL_Renderer* renderer);
+	Entity(SDL_Renderer* _renderer);
+	void changeTexture(const std::string& textureName);
 	~Entity();
 	void setPos(float x, float y);
 	vec2f getPos();

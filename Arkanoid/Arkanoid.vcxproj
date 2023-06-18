@@ -132,6 +132,8 @@
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Brick.h" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Entity.h" />
     <ClCompile Include="Functions.cpp" />
@@ -139,6 +141,8 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="ResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />

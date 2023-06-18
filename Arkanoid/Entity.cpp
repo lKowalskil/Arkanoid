@@ -1,21 +1,52 @@
 #include <Entity.h>
 
-Entity::Entity(const char* texture_filename, SDL_Renderer* renderer)
+Entity::Entity(const std::string& textureName, SDL_Renderer* renderer)
+	: resourceManager(ResourceManager::getInstance())
 {
-	SDL_assert(texture_filename != nullptr || renderer != nullptr);
+	SDL_assert(renderer != nullptr);
 	pos.x = 0;
 	pos.y = 0;
 	dx = 0;
 	dy = 0;
-	texture = loadTexture(texture_filename, renderer);
+	texture = resourceManager.getTexture(textureName);
 	SDL_assert(texture != nullptr);
-	SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
+	vec2f textureSize = resourceManager.getTextureSize(textureName);
+	w = textureSize.x;
+	h = textureSize.y;
 	aabb.x = pos.x;
 	aabb.y = pos.y;
 	aabb.h = h;
 	aabb.w = w;
 }
 
+Entity::Entity(SDL_Renderer* _renderer)
+	: resourceManager(ResourceManager::getInstance())
+{
+	renderer = _renderer;
+	pos.x = 0;
+	pos.y = 0;
+	dx = 0;
+	dy = 0;
+	w = 0;
+	h = 0;
+	texture = nullptr;
+}
+
+void Entity::changeTexture(const std::string& textureName)
+{
+	SDL_assert(renderer != nullptr);
+	dx = 0;
+	dy = 0;
+	texture = resourceManager.getTexture(textureName);
+	SDL_assert(texture != nullptr);
+	vec2f textureSize = resourceManager.getTextureSize(textureName);
+	w = textureSize.x;
+	h = textureSize.y;
+	aabb.x = pos.x;
+	aabb.y = pos.y;
+	aabb.h = h;
+	aabb.w = w;
+}
 
 Entity::~Entity()
 {
@@ -50,6 +81,11 @@ void Entity::draw(SDL_Renderer* renderer)
 	dest.y = pos.y - h / 2;
 	dest.h = h;
 	dest.w = w;
+	if (texture == nullptr)
+	{
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Entity::draw -> Texture is nullptr", nullptr);
+	}
+	SDL_assert(texture != nullptr);
 	SDL_RenderTexture(renderer, texture, NULL, &dest);
 }
 

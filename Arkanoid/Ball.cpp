@@ -1,8 +1,9 @@
 #include <Ball.h>
 
-Ball::Ball(float posX, float posY, const char* texture_filename, SDL_Renderer* renderer)
-	:Entity(texture_filename, renderer), speed(0), isMoving(false)
+Ball::Ball(float posX, float posY, SDL_Renderer* renderer)
+	:Entity(renderer), speed(0), isMoving(false)
 {
+	Entity::changeTexture("Ball");
 	setPos(posX, posY);
 }
 
