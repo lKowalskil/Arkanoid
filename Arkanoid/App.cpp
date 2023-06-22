@@ -11,9 +11,22 @@ App::App(int32_t width, int32_t height)
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		printf("Couldn't initialize SDL: %s\n", SDL_GetError());
-		exit(1);
+		char buffer[256];
+		const char* error = SDL_GetError();
+		sprintf_s(buffer, "App::App -> SDL_Init is not successful, SDL_GetError : %s", error);
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", buffer, nullptr);
+		return;
 	}
+
+	if (TTF_Init() < 0)
+	{
+		char buffer[256];
+		const char* error = TTF_GetError();
+		sprintf_s(buffer, "App::App -> TTF_Init is not successful, TTF_GetError : %s", error);
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", buffer, nullptr);
+		return;
+	}
+
 
 	window = SDL_CreateWindow("Arkanoid", width, height, windowFlags);
 

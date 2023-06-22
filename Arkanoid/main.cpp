@@ -8,11 +8,14 @@
 #include <Ball.h>
 #include <ResourceManager.h>
 #include <Brick.h>
+#include <SDL3/SDL_ttf.h>
+#include <ScoreManager.h>
+#include <chrono>
+#include <numeric>
+#include <BonusScore.h>
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
-
-#define deltaTime 0.016f //Just for imitate delta time
 
 void doKeyDown(SDL_KeyboardEvent* event, App* app)
 {
@@ -102,9 +105,14 @@ void presentScene(SDL_Renderer* renderer)
 
 int main()
 {
+	float timeElapsed = 0.0f;
+	float deltaTime = 0.001f;
 	App app(SCREEN_WIDTH, SCREEN_HEIGHT);
 	ResourceManager& resourceManager = ResourceManager::getInstance();
 	resourceManager.init(app.renderer);
+
+	ScoreManager& scoreManager = ScoreManager::getInstance();
+	scoreManager.init(app.renderer, 15, SCREEN_HEIGHT - 45);
 	
 	vec2f brickSize = resourceManager.getTextureSize("GrayBrick");
 	int numberOfBricksX = SCREEN_WIDTH / brickSize.x - 1;
@@ -135,6 +143,7 @@ int main()
 
 	while (1)
 	{
+		auto start = std::chrono::steady_clock::now();
 		prepareScene(app.renderer);
 		doInput(&app);
 		if (player.checkIfOutOfTheScreen(SCREEN_WIDTH, SCREEN_HEIGHT) == 2)
@@ -184,6 +193,8 @@ int main()
 		{
 			ball.dy = -ball.dy;
 		}
+		
+
 
 		for (Brick& brick : bricks)
 		{
@@ -196,20 +207,18 @@ int main()
 
 		ball.move(deltaTime);
 
-		for (Brick& brick : bricks)
-		{
-			if (!brick.isDestroyed())
-			{
-				brick.draw(app.renderer);
-			}
-		}
-
 		player.animate(deltaTime);
 
 		ball.draw(app.renderer);
 		player.draw(app.renderer);
+		scoreManager.drawScore();
+
 		presentScene(app.renderer);
-		SDL_Delay(deltaTime*1000);
+
+		auto end = std::chrono::steady_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		deltaTime = duration.count() / 1000.0f;
+		timeElapsed += deltaTime;
 	}
 	return 0;
 }

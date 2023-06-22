@@ -1,6 +1,7 @@
 #include <Brick.h>
 #include <random>
 #include <vector>
+#include <ScoreManager.h>
 
 Brick::Brick(float posX, float posY, SDL_Renderer* _renderer)
 	: Entity(_renderer)
@@ -30,6 +31,7 @@ void Brick::Damaged()
 	if (damaged)
 	{
 		destroyed = true;
+		ScoreManager::getInstance().addScore(10);
 		return;
 	}
 	damaged = true;
