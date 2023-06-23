@@ -42,6 +42,7 @@ void ScoreManager::drawScore()
 {
 	std::string scoreText = "Score: " + std::to_string(score);
 
+	SDL_assert(font != nullptr);
 	SDL_Surface* textSurface = TTF_RenderText_Solid(font, scoreText.c_str(), textColor);
 	if (!textSurface)
 	{

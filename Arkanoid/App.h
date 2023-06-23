@@ -9,12 +9,11 @@
 class App
 {
 public:
-	App(int32_t width, int32_t height);
+	App(int32_t _width, int32_t _height);
 	~App();
+	vec2f screenSize;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
-	Player* player;
-	Ball* ball;
 	bool up, down, left, right;
 	vec2f mousePos;
 };

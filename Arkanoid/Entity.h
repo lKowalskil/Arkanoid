@@ -6,23 +6,33 @@
 #include <AABB.h>
 #include <ResourceManager.h>
 
+
+enum OutOfScreenDirection
+{
+	NotOut = 0,
+	Left = 1,
+	Right = 2,
+	Up = 3,
+	Down = 4
+};
+
+
 class Entity {
 	vec2f pos;
 	int w, h;
 	SDL_Texture* texture;
-	ResourceManager& resourceManager;
 	SDL_Renderer* renderer;
 
 public:
 	float dx, dy;
 	AABB aabb;
-	Entity(const std::string& textureName, SDL_Renderer* renderer);
+	Entity(const std::string& textureName, SDL_Renderer* _renderer);
 	Entity(SDL_Renderer* _renderer);
 	void changeTexture(const std::string& textureName);
 	~Entity();
 	void setPos(float x, float y);
 	vec2f getPos();
 	vec2f getSize();
-	void draw(SDL_Renderer* renderer);
-	int checkIfOutOfTheScreen(int screenW, int screenH);
+	void draw();
+	OutOfScreenDirection checkIfOutOfTheScreen(int screenW, int screenH);
 };

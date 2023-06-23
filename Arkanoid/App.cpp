@@ -1,7 +1,7 @@
 #include <App.h>
 
 App::App(int32_t width, int32_t height)
-	:down(0), up(0), right(0), left(0)
+	:down(0), up(0), right(0), left(0), renderer(nullptr), window(nullptr)
 {
 	mousePos.x = 0;
 	mousePos.y = 0;
@@ -46,6 +46,8 @@ App::App(int32_t width, int32_t height)
 		exit(1);
 	}
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+	screenSize.x = width;
+	screenSize.y = height;
 }
 
 App::~App()

@@ -1,16 +1,16 @@
 #include <Entity.h>
 
-Entity::Entity(const std::string& textureName, SDL_Renderer* renderer)
-	: resourceManager(ResourceManager::getInstance())
+Entity::Entity(const std::string& textureName, SDL_Renderer* _renderer)
 {
-	SDL_assert(renderer != nullptr);
+	SDL_assert(_renderer != nullptr);
+	renderer = _renderer;
 	pos.x = 0;
 	pos.y = 0;
 	dx = 0;
 	dy = 0;
-	texture = resourceManager.getTexture(textureName);
+	texture = ResourceManager::getInstance().getTexture(textureName);
 	SDL_assert(texture != nullptr);
-	vec2f textureSize = resourceManager.getTextureSize(textureName);
+	vec2f textureSize = ResourceManager::getInstance().getTextureSize(textureName);
 	w = textureSize.x;
 	h = textureSize.y;
 	aabb.x = pos.x;
@@ -20,7 +20,6 @@ Entity::Entity(const std::string& textureName, SDL_Renderer* renderer)
 }
 
 Entity::Entity(SDL_Renderer* _renderer)
-	: resourceManager(ResourceManager::getInstance())
 {
 	renderer = _renderer;
 	pos.x = 0;
@@ -37,9 +36,9 @@ void Entity::changeTexture(const std::string& textureName)
 	SDL_assert(renderer != nullptr);
 	dx = 0;
 	dy = 0;
-	texture = resourceManager.getTexture(textureName);
+	texture = ResourceManager::getInstance().getTexture(textureName);
 	SDL_assert(texture != nullptr);
-	vec2f textureSize = resourceManager.getTextureSize(textureName);
+	vec2f textureSize = ResourceManager::getInstance().getTextureSize(textureName);
 	w = textureSize.x;
 	h = textureSize.y;
 	aabb.x = pos.x;
@@ -50,7 +49,6 @@ void Entity::changeTexture(const std::string& textureName)
 
 Entity::~Entity()
 {
-
 }
 
 void Entity::setPos(float x, float y)
@@ -74,7 +72,7 @@ vec2f Entity::getSize()
 	return size;
 }
 
-void Entity::draw(SDL_Renderer* renderer)
+void Entity::draw()
 {
 	SDL_FRect dest;
 	dest.x = pos.x - w / 2;
@@ -89,24 +87,26 @@ void Entity::draw(SDL_Renderer* renderer)
 	SDL_RenderTexture(renderer, texture, NULL, &dest);
 }
 
-int Entity::checkIfOutOfTheScreen(int screenW, int screenH)
+OutOfScreenDirection Entity::checkIfOutOfTheScreen(int screenW, int screenH)
 {
 	// 0 - not out, 1 - left, 2 - right, 3 - up, 4 - down
 	if (getPos().x < 0 + getSize().x / 2)
 	{
-		return 1;
+		return Left;
 	}
 	if (getPos().x > screenW - getSize().x / 2)
 	{
-		return 2;
+		return Right;
 	}
 	if (getPos().y < 0 + getSize().y / 2)
 	{
-		return 3;
+		return Up;
 	}
 	if (getPos().y > screenH - getSize().y / 2)
 	{
-		return 4;
+		return Down;
 	}
-	return 0;
+	return NotOut;
 }
+
+
