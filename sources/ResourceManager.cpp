@@ -1,4 +1,5 @@
 #include "ResourceManager.h"
+#include <Windows.h>
 
 ResourceManager& ResourceManager::getInstance()
 {
@@ -128,36 +129,72 @@ ResourceManager::~ResourceManager()
 void ResourceManager::init(SDL_Renderer* _renderer)
 {
 	renderer = _renderer;
-	loadTexture("BlueBrick", "../assets/01.png");
-	loadTexture("BlueBrickDamaged", "../assets/02.png");
-	loadTexture("LightGreenBrick", "../assets/03.png");
-	loadTexture("LightGreenBrickDamaged", "../assets/04.png");
-	loadTexture("PurpleBrick", "../assets/05.png");
-	loadTexture("PurpleBrickDamaged", "../assets/06.png");
-	loadTexture("RedBrick", "../assets/07.png");
-	loadTexture("RedBrickDamaged", "../assets/08.png");
-	loadTexture("OrangeBrick", "../assets/09.png");
-	loadTexture("OrangeBrickDamaged", "../assets/10.png");
-	loadTexture("BlueBrick", "../assets/11.png");
-	loadTexture("BlueBrickDamaged", "../assets/12.png");
-	loadTexture("YellowBrick", "../assets/13.png");
-	loadTexture("YellowBrickDamaged", "../assets/14.png");
-	loadTexture("GreenBrick", "../assets/15.png");
-	loadTexture("GreenBrickDamaged", "../assets/16.png");
-	loadTexture("GrayBrick", "../assets/17.png");
-	loadTexture("GrayBrickDamaged", "../assets/18.png");
-	loadTexture("BrownBrick", "../assets/19.png");
-	loadTexture("BrownBrickDamaged", "../assets/20.png");
-	loadTexture("Player", "../assets/50.png");
-	loadTexture("Player1", "../assets/51.png");
-	loadTexture("Player2", "../assets/52.png");
-	loadTexture("Ball", "../assets/64.png");
-	loadTexture("BonusScore1", "../assets/32.png");
-	loadTexture("BonusScore2", "../assets/33.png");
-	loadTexture("BonusScore3", "../assets/34.png");
-	loadTexture("BonusScore4", "../assets/35.png");
-	loadTexture("BonusScore5", "../assets/36.png");
-	loadTexture("BonusScore6", "../assets/37.png");
-	loadFont("Abbieshire", "../assets/Abbieshire.ttf");
-
+	if (IsDebuggerPresent())
+	{
+		loadTexture("BlueBrick", "../assets/01.png");
+		loadTexture("BlueBrickDamaged", "../assets/02.png");
+		loadTexture("LightGreenBrick", "../assets/03.png");
+		loadTexture("LightGreenBrickDamaged", "../assets/04.png");
+		loadTexture("PurpleBrick", "../assets/05.png");
+		loadTexture("PurpleBrickDamaged", "../assets/06.png");
+		loadTexture("RedBrick", "../assets/07.png");
+		loadTexture("RedBrickDamaged", "../assets/08.png");
+		loadTexture("OrangeBrick", "../assets/09.png");
+		loadTexture("OrangeBrickDamaged", "../assets/10.png");
+		loadTexture("BlueBrick", "../assets/11.png");
+		loadTexture("BlueBrickDamaged", "../assets/12.png");
+		loadTexture("YellowBrick", "../assets/13.png");
+		loadTexture("YellowBrickDamaged", "../assets/14.png");
+		loadTexture("GreenBrick", "../assets/15.png");
+		loadTexture("GreenBrickDamaged", "../assets/16.png");
+		loadTexture("GrayBrick", "../assets/17.png");
+		loadTexture("GrayBrickDamaged", "../assets/18.png");
+		loadTexture("BrownBrick", "../assets/19.png");
+		loadTexture("BrownBrickDamaged", "../assets/20.png");
+		loadTexture("Player", "../assets/50.png");
+		loadTexture("Player1", "../assets/51.png");
+		loadTexture("Player2", "../assets/52.png");
+		loadTexture("Ball", "../assets/64.png");
+		loadTexture("BonusScore1", "../assets/32.png");
+		loadTexture("BonusScore2", "../assets/33.png");
+		loadTexture("BonusScore3", "../assets/34.png");
+		loadTexture("BonusScore4", "../assets/35.png");
+		loadTexture("BonusScore5", "../assets/36.png");
+		loadTexture("BonusScore6", "../assets/37.png");
+		loadFont("Abbieshire", "../assets/Abbieshire.ttf");
+	}
+	else
+	{
+		loadTexture("BlueBrick", "assets/01.png");
+		loadTexture("BlueBrickDamaged", "assets/02.png");
+		loadTexture("LightGreenBrick", "assets/03.png");
+		loadTexture("LightGreenBrickDamaged", "assets/04.png");
+		loadTexture("PurpleBrick", "assets/05.png");
+		loadTexture("PurpleBrickDamaged", "assets/06.png");
+		loadTexture("RedBrick", "assets/07.png");
+		loadTexture("RedBrickDamaged", "assets/08.png");
+		loadTexture("OrangeBrick", "assets/09.png");
+		loadTexture("OrangeBrickDamaged", "assets/10.png");
+		loadTexture("BlueBrick", "assets/11.png");
+		loadTexture("BlueBrickDamaged", "assets/12.png");
+		loadTexture("YellowBrick", "assets/13.png");
+		loadTexture("YellowBrickDamaged", "assets/14.png");
+		loadTexture("GreenBrick", "assets/15.png");
+		loadTexture("GreenBrickDamaged", "assets/16.png");
+		loadTexture("GrayBrick", "assets/17.png");
+		loadTexture("GrayBrickDamaged", "assets/18.png");
+		loadTexture("BrownBrick", "assets/19.png");
+		loadTexture("BrownBrickDamaged", "assets/20.png");
+		loadTexture("Player", "assets/50.png");
+		loadTexture("Player1", "assets/51.png");
+		loadTexture("Player2", "assets/52.png");
+		loadTexture("Ball", "assets/64.png");
+		loadTexture("BonusScore1", "assets/32.png");
+		loadTexture("BonusScore2", "assets/33.png");
+		loadTexture("BonusScore3", "assets/34.png");
+		loadTexture("BonusScore4", "assets/35.png");
+		loadTexture("BonusScore5", "assets/36.png");
+		loadTexture("BonusScore6", "assets/37.png");
+		loadFont("Abbieshire", "assets/Abbieshire.ttf");
+	}
 }

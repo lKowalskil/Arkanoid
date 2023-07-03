@@ -64,7 +64,7 @@ void GameManager::initialize()
 	player->setSpeed(150);
 
 	ball = new Ball(app->screenSize.x / 2, app->screenSize.y - app->screenSize.y / 4, app->renderer);
-	ball->setSpeed(100);
+	ball->setSpeed(250);
 
 	vec2f brickSize = resourceManager->getTextureSize("GrayBrick");
 	int numberOfBricksX = app->screenSize.x / brickSize.x - 1;
@@ -172,12 +172,21 @@ void GameManager::update(float deltaTime)
 	{
 		ball->dy = -ball->dy;
 	}
-	for (Brick& brick : bricks)
+	
+	for (auto brick = bricks.begin(); brick != bricks.end();)
 	{
-		if (ball->aabb.isCollided(&brick.aabb) && !brick.isDestroyed())
+		if (ball->aabb.isCollided(&brick->aabb))
 		{
 			ball->dy = -ball->dy;
-			brick.Damaged();
+			brick->Damaged();
+		}
+		if (brick->isDestroyed())
+		{
+			brick = bricks.erase(brick);
+		}
+		else
+		{
+			++brick;
 		}
 	}
 
@@ -189,10 +198,7 @@ void GameManager::draw()
 {
 	for (Brick& brick : bricks)
 	{
-		if (!brick.isDestroyed())
-		{
-			brick.draw();
-		}
+		brick.draw();
 	}
 	player->draw();
 	ball->draw();
