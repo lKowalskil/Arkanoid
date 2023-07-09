@@ -1,5 +1,7 @@
 #include "GameManager.h"
 #include <chrono>
+#include <random>
+#include <iostream>
 
 void doKeyDown(SDL_KeyboardEvent* event, App* app)
 {
@@ -66,6 +68,8 @@ void GameManager::initialize()
 	ball = new Ball(app->screenSize.x / 2, app->screenSize.y - app->screenSize.y / 4, app->renderer);
 	ball->setSpeed(250);
 
+	
+
 	vec2f brickSize = resourceManager->getTextureSize("GrayBrick");
 	int numberOfBricksX = app->screenSize.x / brickSize.x - 1;
 	int freeSpaceX = app->screenSize.x - brickSize.x * numberOfBricksX;
@@ -111,7 +115,8 @@ void GameManager::handleInput()
 				ball->startMoving(app->mousePos);
 			}
 			break;
-
+		case SDL_EVENT_WINDOW_MOVED:
+			break;
 		default:
 			break;
 		}
@@ -120,6 +125,9 @@ void GameManager::handleInput()
 
 void GameManager::update(float deltaTime)
 {
+	std::random_device randomDevice;
+	std::mt19937 gen(randomDevice());
+
 	OutOfScreenDirection PlayerOutOfScreenDirection = player->checkIfOutOfTheScreen(app->screenSize.x, app->screenSize.y);
 	switch (PlayerOutOfScreenDirection)
 	{
@@ -183,6 +191,32 @@ void GameManager::update(float deltaTime)
 		if (brick->isDestroyed())
 		{
 			brick = bricks.erase(brick);
+			std::uniform_int_distribution<> dis(1, 100);
+			int randomNumber = dis(gen);
+			if (randomNumber <= 5)
+			{
+				bool spawned = false;
+				while (!spawned)
+				{
+					std::uniform_int_distribution<> dis(100, app->screenSize.x - 100);
+					int x = dis(gen);
+					BonusScore newBonus(app->renderer, x, app->screenSize.y - app->screenSize.y / 4);
+					bool collided = false;
+					for (BonusScore bonus : bonuses)
+					{
+						if (bonus.aabb.isCollided(&newBonus.aabb))
+						{
+							collided = true;
+							break;
+						}
+					}
+					if (!collided)
+					{
+						spawned = true;
+						bonuses.push_back(newBonus);
+					}
+				}
+			}
 		}
 		else
 		{
@@ -190,6 +224,23 @@ void GameManager::update(float deltaTime)
 		}
 	}
 
+	for (auto bonus = bonuses.begin(); bonus != bonuses.end();)
+	{
+		if (bonus->aabb.isCollided(&ball->aabb))
+		{
+			bonus = bonuses.erase(bonus);
+			scoreManager->addScore(100);
+		}
+		else
+		{
+			++bonus;
+		}
+	}
+
+	for (BonusScore &bonus : bonuses)
+	{
+		bonus.animate(deltaTime);
+	}
 	player->animate(deltaTime);
 	ball->move(deltaTime);
 }
@@ -199,6 +250,10 @@ void GameManager::draw()
 	for (Brick& brick : bricks)
 	{
 		brick.draw();
+	}
+	for (BonusScore& bonus : bonuses)
+	{
+		bonus.draw();
 	}
 	player->draw();
 	ball->draw();

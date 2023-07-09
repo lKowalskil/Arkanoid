@@ -2,6 +2,7 @@
 
 #include <App.h>
 #include <ScoreManager.h>
+#include <BonusScore.h>
 #include <Brick.h>
 
 class GameManager
@@ -11,6 +12,7 @@ private:
 	ScoreManager* scoreManager;
 	ResourceManager* resourceManager;
 	std::vector<Brick> bricks;
+	std::vector<BonusScore> bonuses;
 	Player* player;
 	Ball* ball;
 	bool gameover = false;
