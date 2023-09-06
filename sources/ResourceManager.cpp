@@ -112,7 +112,6 @@ std::vector<std::string> ResourceManager::getLoadedFontNames()
 	return fontNames;
 }
 
-
 ResourceManager::ResourceManager()
 {	
 }

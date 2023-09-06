@@ -68,8 +68,6 @@ void GameManager::initialize()
 	ball = new Ball(app->screenSize.x / 2, app->screenSize.y - app->screenSize.y / 4, app->renderer);
 	ball->setSpeed(250);
 
-	
-
 	vec2f brickSize = resourceManager->getTextureSize("GrayBrick");
 	int numberOfBricksX = app->screenSize.x / brickSize.x - 1;
 	int freeSpaceX = app->screenSize.x - brickSize.x * numberOfBricksX;
@@ -186,6 +184,7 @@ void GameManager::update(float deltaTime)
 		if (ball->aabb.isCollided(&brick->aabb))
 		{
 			ball->dy = -ball->dy;
+			ball->setPos(ball->getPos().x + ball->dx * deltaTime, ball->getPos().y + ball->dy * deltaTime);
 			brick->Damaged();
 		}
 		if (brick->isDestroyed())

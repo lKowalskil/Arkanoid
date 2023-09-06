@@ -4,7 +4,6 @@
 class vec2f {
 private:
 
-
 public:
 	float x;
 	float y;

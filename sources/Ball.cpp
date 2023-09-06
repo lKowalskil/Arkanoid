@@ -27,3 +27,13 @@ void Ball::setSpeed(int _speed)
 {
 	speed = _speed;
 }
+
+int Ball::getSpeed() const
+{
+	return speed;
+}
+
+bool Ball::getIsMoving() const
+{
+	return isMoving;
+}
