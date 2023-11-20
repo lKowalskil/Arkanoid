@@ -362,3 +362,54 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+
+
+# Ignore the generated project files
+*.make
+*.makefile
+*.workspace
+*.xcworkspace
+
+# Ignore the generated build files
+bin/
+build/
+
+# Ignore user-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore macOS metadata files
+.DS_Store
+
+# Ignore Linux desktop entry files
+*.desktop
+
+# Ignore Premake's temp files
+_premake/
+
+# Ignore compiled binaries
+*.exe
+*.out
+*.dll
+*.so
+*.dylib
+
+# Ignore generated documentation
+doc/
+
+# Ignore Premake Lua state files
+*.lua.state
+
+# Ignore Premake logs
+premake.log
+
+# Ignore Premake's coverage reports
+coverage/
+
+# Ignore user-specific Premake configuration
+premake5-user.lua
